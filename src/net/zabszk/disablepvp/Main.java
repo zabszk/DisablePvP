@@ -18,10 +18,12 @@ public class Main extends JavaPlugin {
 
 	static List<String> DisabledPvP;
 	static FileConfiguration config;
+	static Event event;
 	
 	@Override
 	public void onEnable() {
 		config = getConfig();
+		event = new Event();
 		
 		config.addDefault("enabled", "&6PVP has been &cenabled");
 		config.addDefault("disabled", "&6PVP has been &adisabled");
@@ -67,6 +69,8 @@ public class Main extends JavaPlugin {
 			FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 			DisabledPvP = cfg.getStringList("disabled");
 		}
+		
+		getServer().getPluginManager().registerEvents(event, this);
 	}
 	
 	@Override

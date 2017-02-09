@@ -13,12 +13,12 @@ public class Event implements Listener {
 	public void onDamage(EntityDamageByEntityEvent e)
 	{
 		if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
-			if (Main.DisabledPvP.contains(e.getEntity().getName().toLowerCase())) {
-				e.getDamager().sendMessage(ChatColor.translateAlternateColorCodes('&', Main.config.getString("blocked")));
+			if (Main.DisabledPvP.contains(((Player) e.getEntity()).getName().toLowerCase())) {
+				((Player) e.getDamager()).sendMessage(ChatColor.translateAlternateColorCodes('&', Main.config.getString("blocked")));
 				e.setCancelled(true);
 			}
-			else if (Main.DisabledPvP.contains(e.getDamager().getName().toLowerCase())) {
-				e.getEntity().sendMessage(ChatColor.translateAlternateColorCodes('&', Main.config.getString("blocked-you")));
+			else if (Main.DisabledPvP.contains(((Player) e.getDamager()).getName().toLowerCase())) {
+				((Player) e.getDamager()).sendMessage(ChatColor.translateAlternateColorCodes('&', Main.config.getString("blocked-you")));
 				e.setCancelled(true);
 			}
 		}
