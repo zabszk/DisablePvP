@@ -1,0 +1,16 @@
+name: DisablePvP
+main: net.zabszk.disablepvp.Main
+description: Simple plugin to manage chat.
+version: 1.0
+author: zabszk
+load: STARTUP 
+
+commands:
+   pvp:
+      description: Toggles PvP.
+      usage: /pvp [nick] [status]
+      aliases: togglepvp
+   pvpreload:
+      description: Reloads plugin.
+      usage: /pvpreload
+      aliases: pvpr
