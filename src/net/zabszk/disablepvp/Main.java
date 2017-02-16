@@ -29,6 +29,8 @@ public class Main extends JavaPlugin {
 		config.addDefault("disabled", "&6PVP has been &adisabled");
 		config.addDefault("blocked", "&cSorry, pvp is disabled for this player.");
 		config.addDefault("blocked-you", "&cSorry, you don't have pvp enabled. Type: /pvp");
+		config.addDefault("fullhp-required", "&cYou must have full HP to disable PvP.");
+		config.addDefault("RequireFullHP", true);
 		config.addDefault("AllowMetrics", true);
 		
 		config.options().copyDefaults(true);
@@ -80,8 +82,9 @@ public class Main extends JavaPlugin {
 			
 			if (args.length > 0)
 			{
-				if (sender.hasPermission("disablepvp.others")) search = args[0].toLowerCase();
-				else sender.sendMessage(ChatColor.RED + "[DisablePvP] You don't have permissions!");
+				if (!sender.hasPermission("disablepvp.others")) sender.sendMessage(ChatColor.RED + "[DisablePvP] You don't have permissions!");
+				else if (!Bukkit.getOfflinePlayer(args[0]).isOnline()) sender.sendMessage(ChatColor.RED + "[DisablePvP] Player is offline!");
+				else search = args[0].toLowerCase();
 			}
 			else if (sender instanceof Player)
 			{
@@ -102,11 +105,15 @@ public class Main extends JavaPlugin {
 				}
 				else {
 					if (args.length < 2 || args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("0") || args[1].equalsIgnoreCase("disable")) {
-						DisabledPvP.add(search);
-						Save();
-						
-						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("disabled")));
-						if (args.length > 0 && Bukkit.getOfflinePlayer(search).isOnline()) Bukkit.getPlayer(search).sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("disabled")));
+						if (!config.getBoolean("RequireFullHP") || Bukkit.getPlayer(search).getHealth() == 20 || args.length > 0 || sender.hasPermission("disablepvp.self.bypass"))
+						{
+							DisabledPvP.add(search);
+							Save();
+							
+							sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("disabled")));
+							if (args.length > 0 && Bukkit.getOfflinePlayer(search).isOnline()) Bukkit.getPlayer(search).sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("disabled")));
+						}
+						else sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("fullhp-required")));
 					}
 				}
 			}

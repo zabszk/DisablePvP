@@ -1,7 +1,7 @@
 name: DisablePvP
 main: net.zabszk.disablepvp.Main
 description: Simple plugin to manage chat.
-version: 1.0.1
+version: 1.0.2
 author: zabszk
 load: STARTUP 
 
